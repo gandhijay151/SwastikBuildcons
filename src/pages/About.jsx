@@ -74,14 +74,15 @@ export default function About({ showSeo = true }) {
             </div>
           </div>
 
-          {/* Visual */}
-          <div className="relative">
-            <div className="overflow-hidden rounded-lg border border-coal/8 shadow-soft">
-              <div className="relative aspect-[4/3] bg-rust">
+          {/* Visual — kept as a proportioned card (sticks near the top so it
+              aligns with the heading instead of stretching to the text height). */}
+          <div className="relative lg:sticky lg:top-28">
+            <div className="overflow-hidden rounded-xl border border-coal/8 shadow-soft">
+              <div className="relative aspect-square bg-rust sm:aspect-[4/3]">
                 <img
                   src={terracottaPattern}
                   alt="Swastik Buildcons brand identity"
-                  className="h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
                   decoding="async"
                 />
@@ -95,8 +96,8 @@ export default function About({ showSeo = true }) {
                       'radial-gradient(circle at center, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 45%, transparent 72%)',
                   }}
                 />
-                <div className="relative flex h-full w-full items-center justify-center">
-                  <img src={visitingLogo} alt="Swastik Buildcons" className="w-64 drop-shadow-lg" loading="lazy" decoding="async" />
+                <div className="relative flex h-full w-full items-center justify-center p-8">
+                  <img src={visitingLogo} alt="Swastik Buildcons" className="w-48 drop-shadow-lg sm:w-56" loading="lazy" decoding="async" />
                 </div>
               </div>
             </div>
