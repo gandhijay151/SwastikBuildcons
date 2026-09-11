@@ -85,7 +85,10 @@ export default function About({ showSeo = true }) {
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
+                {/* Soft dark scrim behind the logo so it stands out from the
+                    busy terracotta pattern while keeping the terracotta look. */}
+                <div className="absolute inset-0 bg-ink/35" />
+                <div className="relative flex h-full w-full items-center justify-center">
                   <img src={visitingLogo} alt="Swastik Buildcons" className="w-64 drop-shadow-lg" loading="lazy" decoding="async" />
                 </div>
               </div>

@@ -39,7 +39,10 @@ export default function Home({ showSeo = true }) {
             decoding="async"
             fetchPriority="high"
           />
-          {homeHeroImage && <div className="hero-overlay absolute inset-0" />}
+          {/* Readability scrim: darkens the terracotta pattern behind the copy
+              (strong on the left where the text sits, fading toward the right)
+              so the white text stays legible while the pattern still shows. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-transparent" />
         </div>
 
         <div className="container-shell relative z-10 flex min-h-[calc(100vh-64px)] items-center py-16 lg:py-20">
@@ -51,7 +54,7 @@ export default function Home({ showSeo = true }) {
               transition={{ duration: 0.7, ease: 'easeOut' }}
               className="max-w-2xl"
             >
-              <span className="inline-block rounded-full border border-brass/40 bg-brass/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-brass">
+              <span className="inline-block rounded-full border border-brass/60 bg-ink/40 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-brass backdrop-blur-sm">
                 Now Open for Projects
               </span>
 
@@ -59,7 +62,7 @@ export default function Home({ showSeo = true }) {
                 {company.tagline}
               </h1>
 
-              <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/70">
+              <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/90">
                 {company.intro}
               </p>
 
@@ -72,7 +75,7 @@ export default function Home({ showSeo = true }) {
 
               <div className="mt-10 flex flex-wrap gap-6">
                 {trustPoints.map((item) => (
-                  <span key={item.text} className="flex items-center gap-2 text-sm text-white/65">
+                  <span key={item.text} className="flex items-center gap-2 text-sm font-medium text-white/90">
                     <item.icon size={18} className="text-brass" />
                     {item.text}
                   </span>
@@ -130,12 +133,15 @@ export default function Home({ showSeo = true }) {
           loading="lazy"
           decoding="async"
         />
+        {/* Readability scrim: darkest through the middle where the centered copy
+            sits, fading toward the edges so the terracotta pattern still shows. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/70 to-ink/45" />
         <div className="container-shell relative z-10 text-center">
           <img src={sbMonogram} alt="Swastik Buildcons" className="mx-auto mb-6 w-20" loading="lazy" decoding="async" />
           <h2 className="font-display text-3xl font-bold text-white md:text-4xl">
             Be Our First Success Story
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-white/65">
+          <p className="mx-auto mt-4 max-w-lg text-white/90">
             We&apos;re looking for our founding clients: people who value quality work, clear communication, and a team that goes the extra mile. Let&apos;s build something great together.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
