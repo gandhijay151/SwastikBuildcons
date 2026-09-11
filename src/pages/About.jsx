@@ -87,12 +87,12 @@ export default function About({ showSeo = true }) {
                 />
                 {/* Soft light halo behind the logo: keeps the terracotta bright
                     at the edges while giving the dark logo a lighter center to
-                    sit on so it stays clearly legible. */}
+                    sit on so it stays clearly legible without looking washed. */}
                 <div
                   className="absolute inset-0"
                   style={{
                     background:
-                      'radial-gradient(circle at center, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.15) 40%, transparent 70%)',
+                      'radial-gradient(circle at center, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 45%, transparent 72%)',
                   }}
                 />
                 <div className="relative flex h-full w-full items-center justify-center">
