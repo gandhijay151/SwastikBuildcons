@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #202323;
+  background: #eef0ed;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-tap-highlight-color: transparent;
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  font-family: 'DM Sans', Inter, Manrope, 'Segoe UI', Arial, sans-serif;
+}
+
+::selection {
+  color: #ffffff;
+  background: #8B2635;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+.container-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.section-pad {
+  padding-block: 84px;
+}
+
+.gold-line {
+  width: 72px;
+  height: 2px;
+  background: #C9A227;
+}
+
+.hero-overlay {
+  background:
+    linear-gradient(90deg, rgba(26, 26, 26, 0.97) 0%, rgba(26, 26, 26, 0.84) 52%, rgba(26, 26, 26, 0.58) 100%),
+    radial-gradient(circle at 82% 16%, rgba(139, 38, 53, 0.35), transparent 30%);
+}
+
+.hero-overlay-new {
+  background:
+    linear-gradient(135deg, rgba(26, 26, 26, 0.92) 0%, rgba(26, 26, 26, 0.72) 50%, rgba(139, 38, 53, 0.15) 100%),
+    radial-gradient(ellipse at 30% 80%, rgba(139, 38, 53, 0.25), transparent 40%);
+}
+
+.field-surface {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, rgba(201, 162, 39, 0.55), rgba(26, 26, 26, 0.08)) border-box;
+  border: 1px solid transparent;
+}
+
+.field-surface-burgundy {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, rgba(139, 38, 53, 0.55), rgba(26, 26, 26, 0.08)) border-box;
+  border: 1px solid transparent;
+}
+
+.architect-rule {
+  position: relative;
+}
+
+.architect-rule::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.65), transparent);
+}
+
+.project-image {
+  transition: transform 700ms ease, filter 700ms ease;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.06);
+  filter: saturate(1.08) contrast(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* Enhanced glassmorphism effect with Safari support */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Float animation on hover */
+.float-on-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.float-on-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* Pulsing animation for CTAs */
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(201, 162, 39, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(201, 162, 39, 0);
+  }
+}
+
+/* Shine effect on buttons */
+.button-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: rotate(30deg);
+  transition: transform 0.6s ease;
+}
+
+.button-shine:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+/* Improved card hover effects */
+.enhanced-card-hover {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.enhanced-card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.enhanced-card-hover:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #C9A227, transparent);
+}
+
+.stat-card {
+  background: linear-gradient(145deg, rgba(139, 38, 53, 0.08) 0%, rgba(26, 26, 26, 0.03) 100%);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+}
+
+.stat-card:hover {
+  background: linear-gradient(145deg, rgba(139, 38, 53, 0.12) 0%, rgba(26, 26, 26, 0.06) 100%);
+  border-color: rgba(201, 162, 39, 0.35);
+}
+
+.process-step {
+  position: relative;
+}
+
+.process-step::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -2rem;
+  width: calc(100% - 2rem);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201, 162, 39, 0.4), transparent);
+}
+
+.process-step:last-child::before {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .section-pad {
+    padding-block: 48px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    line-height: 1.15;
+  }
+
+  .container-shell {
+    width: min(1120px, calc(100% - 24px));
+  }
+
+  .process-step::before {
+    display: none;
+  }
+}

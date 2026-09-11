@@ -1,0 +1,688 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Add `IsPublished` (default false) and optional audit field to `IndustrialProject`; create EF migration": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369572659
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369585570
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369703032
+      }
+    ],
+    "1.2 Create `PublicProjectResponse` DTO that excludes financial fields (budget, actual cost)": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369572783
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369707770
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369765106
+      }
+    ],
+    "1.3 Add `GetPublishedAsync(type, status)` and `GetPublishedByIdAsync(id)` to the project service": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369572887
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369770609
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369853027
+      }
+    ],
+    "1.4 Add public `ProjectsController`: `GET /api/projects` (with type/status filters) and `GET /api/projects/{id}`, both `AllowAnonymous`, returning 404 for unpublished/missing": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573013
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369858717
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369925690
+      }
+    ],
+    "1.5 Add integration tests asserting only published projects return and financials are omitted": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573099
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369931145
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370171694
+      }
+    ],
+    "2.1 Add `react-router-dom` and define public routes (`/`, `/about`, `/services`, `/projects`, `/projects/:id`, `/contact`)": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573186
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370177741
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370487654
+      }
+    ],
+    "2.2 Replace hardcoded project data in `Projects.jsx` with a fetch from `/api/projects`; add type/status filter UI and empty state": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573288
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370492777
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370701813
+      }
+    ],
+    "2.3 Build `ProjectDetail.jsx` for `/projects/:id` showing name, location, type, status, progress, scope, timeline": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573384
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370708109
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370832458
+      }
+    ],
+    "3.1 Create admin route area `/admin/*` with a route guard that redirects unauthenticated users to `/admin/login`": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573469
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370838773
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371158896
+      }
+    ],
+    "3.2 Build `Login` screen; on success store session and grant access; on failure show error": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573566
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371164757
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371276491
+      }
+    ],
+    "3.3 Build `AdminLayout` with navigation and logout that clears the session": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573655
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371281802
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371412265
+      }
+    ],
+    "3.4 Create a shared admin API client that attaches the auth header and redirects to login on 401": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573749
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371420777
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371550043
+      }
+    ],
+    "4.1 Add pagination to `GET /api/admin/leads` (paged envelope: items + total)": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573838
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371558020
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371760648
+      }
+    ],
+    "4.2 Build leads list UI with columns (name, phone, type, status, date), search/filter": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369573971
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371766937
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371964429
+      }
+    ],
+    "4.3 Build lead detail view and status-update control that persists changes": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574067
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371971154
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788372305421
+      }
+    ],
+    "4.4 Add `GET /api/admin/leads/export` (CSV) and a download action in the UI": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574163
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788372311865
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788372517314
+      }
+    ],
+    "5.1 Build projects list UI showing key fields and publish status": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574248
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788372525091
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788372802108
+      }
+    ],
+    "5.2 Build create/edit forms with client + server validation and error display": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574334
+      },
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788372808298
+      },
+      {
+        "executionId": "8b84d74c-bb1b-4319-958b-7edc4f9ccabb",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788423167483
+      }
+    ],
+    "5.3 Add delete with confirmation and a publish toggle wired to `IsPublished`": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574432
+      },
+      {
+        "executionId": "8b84d74c-bb1b-4319-958b-7edc4f9ccabb",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788423460326
+      }
+    ],
+    "6.1 Add `Testimonial` model + migration; `ITestimonialService`/`TestimonialService`": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574513
+      },
+      {
+        "executionId": "8b84d74c-bb1b-4319-958b-7edc4f9ccabb",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788423466437
+      }
+    ],
+    "6.2 Add public `GET /api/testimonials` (published only) and admin CRUD under `/api/admin/testimonials`": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574621
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548046424
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548060575
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548362513
+      }
+    ],
+    "6.3 Build public Testimonials section (hidden when empty) and admin Testimonials manager": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574729
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548046549
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548845527
+      }
+    ],
+    "7.1 Build a Team/\"Our People\" section (static content first; graceful omission when empty)": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574831
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548046670
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549311515
+      }
+    ],
+    "7.2 Build a Certifications/awards/safety section": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369574955
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548046749
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549317590
+      }
+    ],
+    "8.1 Add per-route meta title/description/Open Graph tags": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575132
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548046852
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549717818
+      }
+    ],
+    "8.2 Add `public/robots.txt` and generate `public/sitemap.xml`": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575246
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548046940
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549743856
+      }
+    ],
+    "8.3 Add JSON-LD structured data (`LocalBusiness` on home, `Project` on detail pages)": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575347
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047032
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549751277
+      }
+    ],
+    "8.4 Apply `loading=\"lazy\"` to non-critical images": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575437
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047116
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549819055
+      }
+    ],
+    "9.1 Add loading spinner, success/error toasts, and form reset on success": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575563
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047200
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788550208802
+      }
+    ],
+    "9.2 Add a honeypot field and reject submissions that fill it": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575668
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047291
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788550329821
+      }
+    ],
+    "9.3 Add customer confirmation/auto-reply email via `IEmailNotificationService.SendLeadConfirmationAsync`": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575779
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047440
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788550478995
+      },
+      {
+        "executionId": "96e242ef-f999-4c6d-be2f-c645973efe05",
+        "chatSessionId": "sess_842b2743-bf95-4d47-a5ed-799d90ccbc3f",
+        "timestamp": 1788552306572
+      },
+      {
+        "executionId": "35f17df3-faa1-46a2-a60a-4bcaa5e38c9a",
+        "chatSessionId": "sess_842b2743-bf95-4d47-a5ed-799d90ccbc3f",
+        "timestamp": 1788553953429
+      }
+    ],
+    "10.1 Add `POST /api/auth/login` issuing a JWT; wire JWT bearer auth for admin controllers (keep Basic Auth during transition)": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369575999
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047529
+      },
+      {
+        "executionId": "b80c5067-9b0b-428f-9f15-8ccc68615619",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788554012077
+      },
+      {
+        "executionId": "b80c5067-9b0b-428f-9f15-8ccc68615619",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788554022141
+      },
+      {
+        "executionId": "77cec17b-0335-4877-b173-f5db8fc63abd",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788577218385
+      }
+    ],
+    "10.2 Switch the admin frontend to the JWT login flow": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369576134
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047620
+      },
+      {
+        "executionId": "b80c5067-9b0b-428f-9f15-8ccc68615619",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788554012319
+      },
+      {
+        "executionId": "77cec17b-0335-4877-b173-f5db8fc63abd",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788577222470
+      },
+      {
+        "executionId": "77cec17b-0335-4877-b173-f5db8fc63abd",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788577389631
+      }
+    ],
+    "10.3 Confirm rate limiting, HTTPS redirection, and production CORS remain enforced; add audit fields on admin edits": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788369576266
+      },
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548047707
+      },
+      {
+        "executionId": "b80c5067-9b0b-428f-9f15-8ccc68615619",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788554012588
+      },
+      {
+        "executionId": "77cec17b-0335-4877-b173-f5db8fc63abd",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788577393690
+      },
+      {
+        "executionId": "77cec17b-0335-4877-b173-f5db8fc63abd",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788577771447
+      }
+    ],
+    "1. Add `IsPublished` to the project model and expose published projects publicly": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370171840
+      }
+    ],
+    "2. Wire the public Projects page to the API": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788370832677
+      }
+    ],
+    "3. Build the admin application shell and authentication UI": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788371550340
+      }
+    ],
+    "4. Build the admin Leads dashboard": [
+      {
+        "executionId": "61075309-f834-424b-897a-ae38c8a71021",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788372517521
+      }
+    ],
+    "5. Build the admin Projects manager": [
+      {
+        "executionId": "8b84d74c-bb1b-4319-958b-7edc4f9ccabb",
+        "chatSessionId": "sess_da5dfef3-0a26-4542-8619-c43975d502f3",
+        "timestamp": 1788423460531
+      }
+    ],
+    "6. Implement Testimonials end to end": [
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788548845809
+      }
+    ],
+    "7. Add Team and Credentials sections": [
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549317685
+      }
+    ],
+    "8. Add SEO infrastructure": [
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788549819186
+      }
+    ],
+    "9. Improve contact form UX and add spam protection": [
+      {
+        "executionId": "1876312a-f058-4a7e-9278-d0eea0d445dc",
+        "chatSessionId": "sess_032b768e-6464-4113-a301-f65c8ed66cd4",
+        "timestamp": 1788550479153
+      }
+    ],
+    "10. Harden authentication and auditing": [
+      {
+        "executionId": "77cec17b-0335-4877-b173-f5db8fc63abd",
+        "chatSessionId": "sess_c9ec6c1d-5eb6-4eb6-aa12-a43af127975c",
+        "timestamp": 1788577771541
+      }
+    ]
+  }
+}

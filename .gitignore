@@ -1,0 +1,49 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
+backend/**/bin/
+backend/**/obj/
+backend/**/publish/
+backend/**/.env
+backend/**/.env.*
+!backend/**/.env.example
+
+*.user
+*.suo
+.vs/
+
+# Local SQLite database files (created at runtime via EF migrations)
+*.db
+*.db-shm
+*.db-wal
+
+# Local dev config holds the Neon connection string / password — never commit
+backend/**/appsettings.Development.json
+
+# Unrelated tooling accidentally placed in workspace
+ecc/
+
+# Logs
+*.log
+
+# Stray/scratch files
+--output
+content.md.backup
+image.png
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# IDE/agent folders
+.vscode/
+.codesight/
+.claude/
+
+# Published build output — contains a filled-in web.config with real secrets.
+# Never commit these.
+publish/
+publish.zip

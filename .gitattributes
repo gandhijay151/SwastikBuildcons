@@ -1,0 +1,28 @@
+# Normalize line endings across platforms.
+# Text files are stored with LF in the repo and checked out with the
+# platform-native ending, so the site builds and runs identically on
+# Windows, macOS, and Linux (local, CI, and Docker).
+* text=auto eol=lf
+
+# Explicit text types (belt-and-suspenders for common source files).
+*.cs      text eol=lf
+*.js      text eol=lf
+*.jsx     text eol=lf
+*.ts      text eol=lf
+*.tsx     text eol=lf
+*.json    text eol=lf
+*.css     text eol=lf
+*.html    text eol=lf
+*.md      text eol=lf
+*.sql     text eol=lf
+*.csproj  text eol=lf
+*.sln     text eol=lf
+
+# Binary assets must never be line-ending converted.
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.webp    binary
+*.svg     text eol=lf
+*.ico     binary
+*.db      binary

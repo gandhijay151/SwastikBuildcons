@@ -1,0 +1,6 @@
+@SwastikBuildcons.Api_HostAddress = http://localhost:5027
+
+GET {{SwastikBuildcons.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

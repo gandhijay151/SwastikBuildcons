@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.RateLimiting;
 using SwastikBuildcons.Api.Data;
@@ -27,6 +30,7 @@ builder.Services.AddRateLimiter(options =>
 
 builder.Services.Configure<AdminAuthOptions>(builder.Configuration.GetSection(AdminAuthOptions.SectionName));
 builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection(SmtpOptions.SectionName));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 
 if (!builder.Environment.IsDevelopment())
 {
@@ -34,19 +38,70 @@ if (!builder.Environment.IsDevelopment())
 }
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")
+        ?? throw new InvalidOperationException("Connection string 'Default' (PostgreSQL) is not configured.")));
 
 builder.Services.AddScoped<ILeadService, LeadService>();
 builder.Services.AddScoped<IEmailNotificationService, SmtpEmailNotificationService>();
 builder.Services.AddScoped<IIndustrialProjectService, IndustrialProjectService>();
+builder.Services.AddScoped<ITestimonialService, TestimonialService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Resolve JWT settings, with a development-only fallback signing key so the app
+// runs locally without extra config. Production requires a real key (validated
+// in ValidateProductionConfiguration below).
+var jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);
+var jwtSigningKey = jwtSection["SigningKey"];
+if (string.IsNullOrWhiteSpace(jwtSigningKey))
+{
+    jwtSigningKey = "dev-only-insecure-signing-key-change-me-please-32b";
+}
+var jwtIssuer = jwtSection["Issuer"] ?? "SwastikBuildcons";
+var jwtAudience = jwtSection["Audience"] ?? "SwastikBuildconsAdmin";
+
+// Ensure the token issuer (AuthService, via IOptions<JwtOptions>) uses the exact
+// same resolved key/issuer/audience as the bearer validation below. Without this,
+// the dev fallback key would only apply to validation, and issued tokens would be
+// signed with an empty key (throwing IDX10703) or fail validation.
+builder.Services.PostConfigure<JwtOptions>(options =>
+{
+    options.SigningKey = jwtSigningKey;
+    options.Issuer = jwtIssuer;
+    options.Audience = jwtAudience;
+});
 
 builder.Services
     .AddAuthentication(BasicAuthenticationHandler.SchemeName)
     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(
         BasicAuthenticationHandler.SchemeName,
-        options => { });
+        options => { })
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSigningKey))
+        };
+    });
 
-builder.Services.AddAuthorization();
+// Accept either Basic or JWT bearer during the transition (design: both coexist).
+builder.Services.AddAuthorization(options =>
+{
+    var multiScheme = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder(
+            BasicAuthenticationHandler.SchemeName,
+            JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+
+    // Make the combined scheme the default so [Authorize] challenges both.
+    options.DefaultPolicy = multiScheme;
+    options.FallbackPolicy = null;
+});
 
 builder.Services.AddCors(options =>
 {
@@ -76,9 +131,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    using var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.EnsureCreated();
+}
+
+// Apply EF Core migrations on startup so the PostgreSQL schema is always current.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
 }
 
 app.UseHttpsRedirection();
@@ -96,17 +155,6 @@ app.Run();
 
 static void ValidateProductionConfiguration(IConfiguration configuration)
 {
-    var connectionString = configuration.GetConnectionString("DefaultConnection");
-    if (string.IsNullOrWhiteSpace(connectionString))
-    {
-        throw new InvalidOperationException("Production connection string is not configured.");
-    }
-    // Optional: warn if still pointing to local developer database
-    if (connectionString.Contains("MSSQLLocalDB", StringComparison.OrdinalIgnoreCase))
-    {
-        throw new InvalidOperationException("Production connection string should not point to MSSQLLocalDB.");
-    }
-
     var adminPassword = configuration[$"{AdminAuthOptions.SectionName}:Password"];
     if (string.IsNullOrWhiteSpace(adminPassword) ||
         string.Equals(adminPassword, "ChangeThisPassword", StringComparison.Ordinal))
@@ -121,4 +169,20 @@ static void ValidateProductionConfiguration(IConfiguration configuration)
     {
         throw new InvalidOperationException("Production CORS origins must be set to your deployed frontend domain (not localhost).");
     }
+
+    var jwtKey = configuration[$"{JwtOptions.SectionName}:SigningKey"];
+    if (string.IsNullOrWhiteSpace(jwtKey) || jwtKey.Length < 32)
+    {
+        throw new InvalidOperationException("Production JWT signing key must be configured with at least 32 characters.");
+    }
 }
+
+/// <summary>
+/// Exposes the implicit top-level <c>Program</c> class so integration tests can
+/// reference it via <c>WebApplicationFactory&lt;Program&gt;</c>.
+/// </summary>
+public partial class Program { }
+
+
+
+
