@@ -7,14 +7,6 @@ import { processSteps, services, civilServices, equipmentFleet, certifications }
 import sbMonogram from '../../assets/brand/SWASTIK.svg';
 import { Factory, Zap, Route, Droplets, Landmark, SquareStack, Menu, MapPin, Award, Shield, CheckCircle, Briefcase, FileText } from 'lucide-react';
 
-// Showcase photos for the "How We Work" panel. Imported (not public-path) so
-// Vite bundles and fingerprints them regardless of the source folder.
-import showcase1 from '../../assets/reference/pexels-andrey-du-2157697052-34906868.jpg';
-import showcase2 from '../../assets/reference/pexels-mikhael-91948491-9136257.jpg';
-import showcase3 from '../../assets/reference/pexels-myatezhny39-3021129.jpg';
-import showcase4 from '../../assets/reference/pexels-quentin-ecrepont-1148362-3818947.jpg';
-import showcase5 from '../../assets/reference/photo-1628012209120-d9db7abf7eab.png';
-
 export default function Services({ showSeo = true }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('all');
@@ -25,15 +17,10 @@ export default function Services({ showSeo = true }) {
     ? [...services.slice(0, 1), ...civilServices]
     : services.slice(0, 4); // Interior design services
 
-  // Rotating showcase photos for the "How We Work" panel. The panel falls back
-  // to a solid brand background when this array is empty.
-  const industrialImages = [
-    { src: showcase1, alt: 'Construction site with tower cranes over a city skyline', transform: 'scale(1)' },
-    { src: showcase2, alt: 'Modern white commercial towers', transform: 'scale(1.05)' },
-    { src: showcase3, alt: 'Contemporary white residential building', transform: 'scale(1)' },
-    { src: showcase4, alt: 'Architectural facade detail', transform: 'scale(1.05)' },
-    { src: showcase5, alt: 'Completed construction project', transform: 'scale(1)' },
-  ];
+  // Rotating showcase photos for the "How We Work" panel. Empty by design — the
+  // panel falls back to a solid brand background. Add only licensed/original
+  // images here (avoid unlicensed stock to prevent copyright issues).
+  const industrialImages = [];
 
   useEffect(() => {
     if (industrialImages.length === 0) return;

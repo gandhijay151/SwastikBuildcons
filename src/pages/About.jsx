@@ -85,9 +85,16 @@ export default function About({ showSeo = true }) {
                   loading="lazy"
                   decoding="async"
                 />
-                {/* Soft dark scrim behind the logo so it stands out from the
-                    busy terracotta pattern while keeping the terracotta look. */}
-                <div className="absolute inset-0 bg-ink/35" />
+                {/* Soft light halo behind the logo: keeps the terracotta bright
+                    at the edges while giving the dark logo a lighter center to
+                    sit on so it stays clearly legible. */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'radial-gradient(circle at center, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.15) 40%, transparent 70%)',
+                  }}
+                />
                 <div className="relative flex h-full w-full items-center justify-center">
                   <img src={visitingLogo} alt="Swastik Buildcons" className="w-64 drop-shadow-lg" loading="lazy" decoding="async" />
                 </div>
