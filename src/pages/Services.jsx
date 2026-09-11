@@ -7,6 +7,13 @@ import { processSteps, services, civilServices, equipmentFleet, certifications }
 import sbMonogram from '../../assets/brand/SWASTIK.svg';
 import { Factory, Zap, Route, Droplets, Landmark, SquareStack, Menu, MapPin, Award, Shield, CheckCircle, Briefcase, FileText } from 'lucide-react';
 
+// Showcase photos for the "How We Work" panel (WebP, optimized). Imported so
+// Vite bundles and fingerprints them.
+import showcase1 from '../../assets/home-photos/pexels-raymond-ma-yi-rong-504251-7025800.webp';
+import showcase2 from '../../assets/home-photos/pexels-mikhael-91948491-9136257.webp';
+import showcase3 from '../../assets/home-photos/photo-1748063578185-3d68121b11ff.webp';
+import showcase4 from '../../assets/home-photos/pexels-myatezhny39-3021129.webp';
+
 export default function Services({ showSeo = true }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('all');
@@ -17,10 +24,13 @@ export default function Services({ showSeo = true }) {
     ? [...services.slice(0, 1), ...civilServices]
     : services.slice(0, 4); // Interior design services
 
-  // Rotating showcase photos for the "How We Work" panel. Empty by design — the
-  // panel falls back to a solid brand background. Add only licensed/original
-  // images here (avoid unlicensed stock to prevent copyright issues).
-  const industrialImages = [];
+  // Rotating showcase photos for the "How We Work" panel (optimized WebP).
+  const industrialImages = [
+    { src: showcase1, alt: 'Modern high-rise construction', transform: 'scale(1)' },
+    { src: showcase2, alt: 'Contemporary commercial towers', transform: 'scale(1.05)' },
+    { src: showcase3, alt: 'Completed residential development', transform: 'scale(1)' },
+    { src: showcase4, alt: 'Active construction site with cranes', transform: 'scale(1.05)' },
+  ];
 
   useEffect(() => {
     if (industrialImages.length === 0) return;
