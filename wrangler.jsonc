@@ -1,0 +1,12 @@
+{
+  // Cloudflare Workers config: serve the Vite build (dist/) as a static SPA.
+  // The `assets` binding makes Wrangler serve the built files directly, and
+  // single-page-application handling rewrites unknown routes to index.html so
+  // React Router client-side routes (e.g. /about, /admin/login) resolve.
+  "name": "swastikbuildcons",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
