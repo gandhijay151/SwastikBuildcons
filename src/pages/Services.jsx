@@ -223,23 +223,23 @@ export default function Services({ showSeo = true }) {
           <div className="grid lg:grid-cols-2">
             {/* Left Visual - Industrial Work Showcase */}
             <div className="relative min-h-[300px] bg-ink p-8 lg:p-10 overflow-hidden">
-              {/* Industrial Image Showcase */}
+              {/* Industrial Image Showcase — crossfades between photos. Each
+                  image is absolutely positioned so they stack, and opacity
+                  (not transform) is animated so the fade actually shows. */}
               <div className="absolute inset-0 h-full w-full">
-                <div className="absolute inset-0 h-full w-full">
-                  {industrialImages.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image.src}
-                      alt={image.alt}
-                      className={`h-full w-full object-cover transform transition-transform duration-3000 ease-in-out ${
-                        index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-                      }`}
-                      style={{ transform: image.transform }}
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      decoding="async"
-                    />
-                  ))}
-                </div>
+                {industrialImages.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.src}
+                    alt={image.alt}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+                      index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    style={{ transform: image.transform }}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                ))}
               </div>
 
               {/* Overlay for text readability */}
