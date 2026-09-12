@@ -1,6 +1,7 @@
 import { Send, Paperclip, Calendar, MapPin, TrendingUp, Phone, Loader2, CheckCircle2, AlertCircle, X } from 'lucide-react';
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
 import Button from './Button';
+import Turnstile from './Turnstile';
 import { getApiBaseUrl } from '../lib/api';
 
 const initialValues = {
@@ -11,7 +12,7 @@ const initialValues = {
   budget: '',
   timeline: '',
   message: '',
-  website: '', // honeypot spam trap (Req 8.4) — must stay empty for real users
+  website: '', // honeypot spam trap (Req 8.4) ï¿½ must stay empty for real users
   // File uploads will be handled separately
 };
 
@@ -40,7 +41,10 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [turnstileToken, setTurnstileToken] = useState('');
   const formRef = useRef(null);
+
+  const handleTurnstileVerify = useCallback((token) => setTurnstileToken(token), []);
 
   // Auto-dismiss the toast after a few seconds so it behaves like a toast, not a
   // permanent banner (Req 8.2, 8.3).
@@ -139,7 +143,8 @@ Timeline: ${values.timeline}
 
         const leadData = {
           ...values,
-          message: enhancedMessage
+          message: enhancedMessage,
+          turnstileToken,
         };
 
         const response = await fetch(`${apiBaseUrl}/api/leads`, {
@@ -534,7 +539,9 @@ Please review and respond at your earliest convenience.`);
 
         {/* Submit */}
         <div className="px-6 pb-8 pt-4 md:px-8 md:pb-8">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          {/* Cloudflare Turnstile (renders only when VITE_TURNSTILE_SITE_KEY is set) */}
+          <Turnstile onVerify={handleTurnstileVerify} />
+          <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <Button
               className="w-full sm:w-auto gap-2 disabled:cursor-not-allowed disabled:opacity-60"
               disabled={isSubmitting}

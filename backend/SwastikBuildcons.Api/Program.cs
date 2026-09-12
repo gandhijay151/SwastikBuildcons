@@ -31,6 +31,9 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.Configure<AdminAuthOptions>(builder.Configuration.GetSection(AdminAuthOptions.SectionName));
 builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection(SmtpOptions.SectionName));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
+builder.Services.Configure<AiOptions>(builder.Configuration.GetSection(AiOptions.SectionName));
+builder.Services.Configure<TurnstileOptions>(builder.Configuration.GetSection(TurnstileOptions.SectionName));
+builder.Services.AddHttpClient();
 
 if (!builder.Environment.IsDevelopment())
 {
@@ -38,11 +41,13 @@ if (!builder.Environment.IsDevelopment())
 }
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")
-        ?? throw new InvalidOperationException("Connection string 'Default' (PostgreSQL) is not configured.")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' (PostgreSQL) is not configured.")));
 
 builder.Services.AddScoped<ILeadService, LeadService>();
 builder.Services.AddScoped<IEmailNotificationService, SmtpEmailNotificationService>();
+builder.Services.AddScoped<IAiLeadAnalysisService, GeminiLeadAnalysisService>();
+builder.Services.AddScoped<ITurnstileVerifier, TurnstileVerifier>();
 builder.Services.AddScoped<IIndustrialProjectService, IndustrialProjectService>();
 builder.Services.AddScoped<ITestimonialService, TestimonialService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -139,6 +144,22 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
+
+// Security headers. This is a JSON API, so a full CSP isn't needed; these cover
+// MIME-sniffing, clickjacking, and referrer leakage. HSTS only in production
+// (it requires HTTPS and shouldn't be sent over plain-HTTP dev).
+app.Use(async (context, next) =>
+{
+    var headers = context.Response.Headers;
+    headers["X-Content-Type-Options"] = "nosniff";
+    headers["X-Frame-Options"] = "DENY";
+    headers["Referrer-Policy"] = "no-referrer";
+    if (!app.Environment.IsDevelopment())
+    {
+        headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+    }
+    await next();
+});
 
 app.UseHttpsRedirection();
 

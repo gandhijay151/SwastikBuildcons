@@ -50,6 +50,19 @@ function statusBadgeClass(status) {
   return STATUS_BADGE_STYLES[key] || 'bg-coal/8 text-coal/70 border-coal/15';
 }
 
+// AI priority tag colors (Hot/Warm/Cold). Falls back to a neutral dash when the
+// lead has not been analyzed (AI disabled or analysis still pending/failed).
+const PRIORITY_BADGE_STYLES = {
+  hot: 'bg-red-100 text-red-700 border-red-200',
+  warm: 'bg-amber-100 text-amber-700 border-amber-200',
+  cold: 'bg-sky-100 text-sky-700 border-sky-200',
+};
+
+function priorityBadgeClass(priority) {
+  const key = String(priority || '').toLowerCase().replace(/[^a-z]/g, '');
+  return PRIORITY_BADGE_STYLES[key] || 'bg-coal/8 text-coal/50 border-coal/15';
+}
+
 // Format an ISO/DateTimeOffset string into a readable submission date.
 function formatDate(value) {
   if (!value) return '—';
@@ -332,6 +345,9 @@ export default function LeadsDashboard() {
                     Status
                   </th>
                   <th scope="col" className="px-5 py-3 font-semibold text-coal/70">
+                    AI Priority
+                  </th>
+                  <th scope="col" className="px-5 py-3 font-semibold text-coal/70">
                     Submitted
                   </th>
                   <th scope="col" className="px-5 py-3 text-right font-semibold text-coal/70">
@@ -365,6 +381,16 @@ export default function LeadsDashboard() {
                         )}`}
                       >
                         {lead.status || 'Unknown'}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3">
+                      <span
+                        title={lead.aiSummary || undefined}
+                        className={`inline-block rounded-full border px-3 py-1 text-[11px] font-semibold ${priorityBadgeClass(
+                          lead.aiPriority,
+                        )}`}
+                      >
+                        {lead.aiPriority || '—'}
                       </span>
                     </td>
                     <td className="px-5 py-3 text-coal/70">{formatDate(lead.createdAtUtc)}</td>

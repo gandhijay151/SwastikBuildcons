@@ -8,7 +8,9 @@ namespace SwastikBuildcons.Api.Controllers;
 
 [ApiController]
 [Route("api/leads")]
-public class LeadsController(ILeadService leadService) : ControllerBase
+public class LeadsController(
+    ILeadService leadService,
+    ITurnstileVerifier turnstileVerifier) : ControllerBase
 {
     [HttpPost]
     [AllowAnonymous]
@@ -26,6 +28,14 @@ public class LeadsController(ILeadService leadService) : ControllerBase
         if (!string.IsNullOrWhiteSpace(request.Website))
         {
             return Accepted();
+        }
+
+        // Cloudflare Turnstile check. No-op when Turnstile isn't configured; when
+        // it is, a missing/invalid token is rejected as a bad request.
+        var remoteIp = HttpContext.Connection.RemoteIpAddress?.ToString();
+        if (!await turnstileVerifier.VerifyAsync(request.TurnstileToken, remoteIp, cancellationToken))
+        {
+            return BadRequest(new { error = "CAPTCHA verification failed. Please try again." });
         }
 
         var lead = await leadService.CreateAsync(request, cancellationToken);

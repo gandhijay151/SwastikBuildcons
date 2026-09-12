@@ -33,4 +33,10 @@ public class CreateLeadRequest
     /// rejected without persisting a lead.
     /// </summary>
     public string? Website { get; set; }
+
+    /// <summary>
+    /// Cloudflare Turnstile token from the widget on the contact form. Only
+    /// enforced when Turnstile is configured on the server; otherwise ignored.
+    /// </summary>
+    public string? TurnstileToken { get; set; }
 }

@@ -1,103 +1,90 @@
-# Deploy Guide — Swastik Buildcons
+# Deployment Guide — Swastik Buildcons
 
-Stack: Cloudflare Pages (frontend) + MonsterASP.NET (API) + Neon Postgres (DB) + Brevo (email).
-The database is already set up and live on Neon. This guide covers hosting + config.
-
----
-
-## 0. Reset the Neon password first ⚠️
-The connection-string password was shared in chat, so rotate it:
-- Neon dashboard → **Roles** → reset password for `neondb_owner`
-- Use the NEW password everywhere below.
+Stack: Cloudflare Pages (frontend) + MonsterASP.NET (API, free) + Neon Postgres (DB) + Brevo (email).
+Frontend is already deployed on Cloudflare Pages. This guide covers the remaining steps.
 
 ---
 
-## 1. Backend API → MonsterASP.NET (free)
+## STEP 1 — Redeploy frontend (fixes the /admin 404)
 
-1. Sign up at monsterasp.net (free plan, no card).
-2. Create a site. Note its address — MonsterASP.NET assigns a `.runasp.net`
-   domain (e.g. `swastikbuildcons-api.runasp.net`). Note: `admin.monsterasp.net`
-   is just the control panel; your live site is served from `*.runasp.net`.
-3. Publish locally (already done once; re-run to refresh):
-   ```
-   dotnet publish backend/SwastikBuildcons.Api -c Release -o publish
-   ```
-4. Upload the contents of the `publish/` folder (at the repo root:
-   `d:\Project\swastikbuildcons\publish\`) via their control panel / FTP / web deploy.
-   Upload the FOLDER CONTENTS into the site root (`wwwroot`), not the folder itself.
-   Do NOT upload `appsettings.Development.json` (it holds the old DB password and
-   has already been removed from the publish output).
-5. Set these **environment variables** (or app settings) on the host:
+The `dist/` folder now includes a `public/_redirects` file (`/*  /index.html  200`)
+so client-side routes like /admin, /about, /projects no longer 404.
 
-   ```
-   ASPNETCORE_ENVIRONMENT=Production
-   ConnectionStrings__Default=Host=ep-empty-sound-ayjbi1ju-pooler.c-5.us-east-2.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=<NEW_NEON_PASSWORD>;SSL Mode=Require;Trust Server Certificate=true
-   AdminAuth__Username=admin
-   AdminAuth__Password=<A_STRONG_PASSWORD>
-   Jwt__SigningKey=<A_LONG_RANDOM_SECRET_AT_LEAST_32_CHARS>
-   Jwt__Issuer=SwastikBuildcons
-   Jwt__Audience=SwastikBuildconsAdmin
-   Jwt__ExpiryMinutes=480
-   Cors__AllowedOrigins__0=https://swastikbuildcons.com
-   Cors__AllowedOrigins__1=https://www.swastikbuildcons.com
-   Smtp__Host=smtp-relay.brevo.com
-   Smtp__Port=587
-   Smtp__EnableSsl=true
-   Smtp__Username=b7eaa0001@smtp-brevo.com
-   Smtp__Password=<BREVO_SMTP_KEY>
-   Smtp__FromEmail=<a verified sender in Brevo>
-   Smtp__ToEmail=<inbox where leads should arrive>
-   ```
+In the VS Code terminal (use your REAL Cloudflare token):
 
-   Notes:
-   - The connection-string key MUST be `ConnectionStrings__Default` (the app reads
-     the connection named "Default"). `DefaultConnection` will NOT work — the app
-     throws "Connection string 'Default' is not configured" on startup.
-   - `Jwt__SigningKey` is REQUIRED and must be at least 32 characters. The app
-     refuses to start in Production without it.
-   - The app runs EF migrations automatically at startup — no manual DB step.
-   - It refuses to start in Production if `AdminAuth__Password` is blank/default, or if CORS points at localhost. These are guardrails.
-   - Leave Smtp blank to disable email (leads still stored).
-   - On MonsterASP.NET (IIS-based), set these under the site's **Application
-     Settings / Environment Variables** in the control panel. The `__`
-     (double-underscore) format maps to nested config keys.
+    $env:CLOUDFLARE_API_TOKEN = "your-real-cloudflare-token"
+    npx wrangler pages deploy dist --project-name=swastikbuildcons
+
+Or via dashboard: Workers & Pages -> swastikbuildcons -> Create deployment -> drag the `dist` folder.
+
+After this: swastikbuildcons.com/admin loads the login page (no 404). Login works after Steps 2-4.
 
 ---
 
-## 2. DNS for the API (Cloudflare)
+## STEP 2 — Host the API on MonsterASP.NET (free)
 
-- Cloudflare → your zone → DNS → add a **CNAME**: `api` → your `*.runasp.net` address
-  (e.g. `swastikbuildcons-api.runasp.net`).
-- Result: `https://api.swastikbuildcons.com` → the API.
-- In MonsterASP.NET, add `api.swastikbuildcons.com` as a custom domain / binding on
-  the site so it accepts requests for that hostname (and issues HTTPS for it).
-
----
-
-## 3. Frontend → Cloudflare Pages (free)
-
-1. Cloudflare → **Workers & Pages → Create → Pages → connect your Git repo**.
-2. Build settings:
-   - Build command: `npm run build`
-   - Output directory: `dist`
-3. Environment variable:
-   - `VITE_API_BASE_URL=https://api.swastikbuildcons.com`
-4. After first build: Pages → **Custom domains** → add `swastikbuildcons.com` and `www`.
+1. monsterasp.net -> sign up (free plan, no card).
+2. Create a new site; note its URL (e.g. swastikbuildcons.runasp.net).
+3. Note the FTP details or Web Deploy publish profile.
+4. Set the runtime to .NET 9 if asked.
 
 ---
 
-## 4. Smoke test (live)
+## STEP 3 — Upload the API + set secrets
 
-- `https://api.swastikbuildcons.com/health` → healthy
-- `https://swastikbuildcons.com` → submit the contact form:
-  - lead saved (check via admin endpoint), and
-  - Brevo email arrives at `Smtp__ToEmail`
-- Admin: calling an admin endpoint with valid creds → data; with none → 401
-- Browser console: no mixed-content / HTTPS errors
+Upload everything inside:
+    backend/SwastikBuildcons.Api/publish/
+to the site root (FileZilla for FTP, or the host's file manager).
+
+Set these environment variables / app settings on the host:
+
+    ASPNETCORE_ENVIRONMENT=Production
+    ConnectionStrings__DefaultConnection=Host=ep-empty-sound-ayjbi1ju-pooler.c-5.us-east-2.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=YOUR_NEW_NEON_PASSWORD;SSL Mode=Require;Trust Server Certificate=true
+    AdminAuth__Username=admin
+    AdminAuth__Password=CHOOSE_A_STRONG_PASSWORD
+    Cors__AllowedOrigins__0=https://swastikbuildcons.com
+    Cors__AllowedOrigins__1=https://www.swastikbuildcons.com
+    Smtp__Host=smtp-relay.brevo.com
+    Smtp__Port=587
+    Smtp__EnableSsl=true
+    Smtp__Username=b7eaa0001@smtp-brevo.com
+    Smtp__Password=YOUR_BREVO_SMTP_KEY
+    Smtp__FromEmail=YOUR_VERIFIED_BREVO_SENDER
+    Smtp__ToEmail=WHERE_LEADS_SHOULD_ARRIVE
+
+Optional (enable later, not required to launch):
+    Ai__ApiKey=YOUR_GEMINI_KEY          # AI lead triage
+    Ai__Model=gemini-flash-latest
+    Turnstile__SecretKey=YOUR_TURNSTILE_SECRET   # CAPTCHA (also set VITE_TURNSTILE_SITE_KEY in the frontend build)
+
+Notes:
+- The app runs EF Core migrations automatically at startup (no manual DB step).
+- It refuses to start in Production if AdminAuth__Password is blank/default or CORS points at localhost (guardrails).
+- Admin login = admin / whatever you set for AdminAuth__Password.
+- Use the NEW Neon password (rotate the one exposed in chat).
 
 ---
 
-## Notes
-- Frontend rebuilds/redeploys automatically on every Git push (Cloudflare Pages).
-- To update the API: re-run `dotnet publish` and re-upload.
-- Never commit secrets. `appsettings.Development.json` (local Neon string) is gitignored.
+## STEP 4 — Point api.swastikbuildcons.com at the API (Cloudflare DNS)
+
+Cloudflare -> your domain -> DNS -> Add record:
+- Type: CNAME
+- Name: api
+- Target: your MonsterASP URL (e.g. swastikbuildcons.runasp.net)
+
+Result: https://api.swastikbuildcons.com routes to the API.
+
+---
+
+## STEP 5 — Smoke test
+
+1. https://api.swastikbuildcons.com/health  -> Healthy
+2. https://swastikbuildcons.com/admin -> log in (admin / your password) -> dashboard loads
+3. https://swastikbuildcons.com -> submit the contact form -> lead saved + Brevo email arrives
+4. Browser console: no mixed-content / HTTPS errors
+
+---
+
+## Updating later
+- Frontend: re-run `npm run build` (with VITE_API_BASE_URL set) and redeploy dist.
+- API: re-run `dotnet publish -c Release -o publish` and re-upload.

@@ -10,6 +10,7 @@ namespace SwastikBuildcons.Api.Services;
 public class LeadService(
     AppDbContext dbContext,
     IEmailNotificationService emailNotificationService,
+    IAiLeadAnalysisService aiLeadAnalysisService,
     ILogger<LeadService> logger) : ILeadService
 {
     // Default paging bounds for GetPagedAsync.
@@ -51,6 +52,23 @@ public class LeadService(
         catch (Exception ex)
         {
             logger.LogError(ex, "Failed to send customer confirmation for lead {LeadId}.", lead.Id);
+        }
+
+        // AI triage (summary + priority). Same no-op-on-failure contract: never
+        // let AI break lead creation. Persist the result when we get one.
+        try
+        {
+            var analysis = await aiLeadAnalysisService.AnalyzeAsync(lead, cancellationToken);
+            if (analysis is not null)
+            {
+                lead.AiSummary = analysis.Summary;
+                lead.AiPriority = analysis.Priority;
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "AI analysis failed for lead {LeadId}.", lead.Id);
         }
 
         return ToResponse(lead);
@@ -173,7 +191,9 @@ public class LeadService(
             lead.Message,
             lead.Timeline,
             lead.Status,
-            lead.CreatedAtUtc);
+            lead.CreatedAtUtc,
+            lead.AiSummary,
+            lead.AiPriority);
     }
 }
 

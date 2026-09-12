@@ -10,4 +10,6 @@ public record LeadResponse(
     string? Message,
     string? Timeline,
     string Status,
-    DateTimeOffset CreatedAtUtc);
+    DateTimeOffset CreatedAtUtc,
+    string? AiSummary,
+    string? AiPriority);

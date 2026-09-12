@@ -14,6 +14,7 @@ import {
   MessageSquare,
   CheckCircle2,
   Save,
+  Sparkles,
 } from 'lucide-react';
 import { get, patch, ApiError } from '../apiClient';
 
@@ -45,6 +46,17 @@ const STATUS_BADGE_STYLES = {
 function statusBadgeClass(status) {
   const key = String(status || '').toLowerCase().replace(/[^a-z]/g, '');
   return STATUS_BADGE_STYLES[key] || 'bg-coal/8 text-coal/70 border-coal/15';
+}
+
+const PRIORITY_BADGE_STYLES = {
+  hot: 'bg-red-100 text-red-700 border-red-200',
+  warm: 'bg-amber-100 text-amber-700 border-amber-200',
+  cold: 'bg-sky-100 text-sky-700 border-sky-200',
+};
+
+function priorityBadgeClass(priority) {
+  const key = String(priority || '').toLowerCase().replace(/[^a-z]/g, '');
+  return PRIORITY_BADGE_STYLES[key] || 'bg-coal/8 text-coal/50 border-coal/15';
 }
 
 function formatDateTime(value) {
@@ -231,6 +243,33 @@ export default function LeadDetail() {
                 {lead.status || 'Unknown'}
               </span>
             </header>
+
+            {/* AI triage insight (summary + priority). Only shown once the lead
+                has been analyzed; hidden when AI is disabled or not yet run. */}
+            {(lead.aiSummary || lead.aiPriority) && (
+              <div className="flex gap-3 border-b border-coal/10 bg-brass/5 px-5 py-4">
+                <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-brass" aria-hidden="true" />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-coal/50">
+                      AI Triage
+                    </span>
+                    {lead.aiPriority && (
+                      <span
+                        className={`inline-block rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${priorityBadgeClass(
+                          lead.aiPriority,
+                        )}`}
+                      >
+                        {lead.aiPriority}
+                      </span>
+                    )}
+                  </div>
+                  {lead.aiSummary && (
+                    <p className="mt-1.5 text-sm leading-6 text-ink">{lead.aiSummary}</p>
+                  )}
+                </div>
+              </div>
+            )}
 
             <dl className="divide-y divide-coal/8">
               <DetailRow icon={Phone} label="Phone">
